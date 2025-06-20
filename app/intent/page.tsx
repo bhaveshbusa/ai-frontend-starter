@@ -1,10 +1,10 @@
 'use client'
 import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { componentRegistry } from '@/components/registry/componentRegistry'
 
-export default function IntentPage() {
+function IntentPageContent() {
   const params = useSearchParams()
   const componentName = params.get('component')
   const [Component, setComponent] = useState<any>(null)
@@ -17,4 +17,12 @@ export default function IntentPage() {
 
   if (!Component) return <div>Loading...</div>
   return <Component />
+}
+
+export default function IntentPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <IntentPageContent />
+    </Suspense>
+  )
 }
